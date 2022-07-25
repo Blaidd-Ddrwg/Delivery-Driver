@@ -5,24 +5,30 @@ using UnityEngine;
 
 public class Delivery : MonoBehaviour
 {
-    bool hasPackage = false;
-    void OnCollisionEnter2D(Collision2D other)
+    bool _hasPackage = false;
+
+    SpriteRenderer _spriteRenderer;
+
+    void Start()
     {
-        Debug.Log("Collision");
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        
     }
-    
+
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Package") && hasPackage == false)
+        if (other.CompareTag("Package") && _hasPackage == false)
         {
-            hasPackage = true;
+            _hasPackage = true;
             Destroy(other.gameObject);
+            _spriteRenderer.color = other.GetComponent<SpriteRenderer>().color;
             Debug.Log("Package Picked Up");
         }
         
-        if (other.CompareTag("Customer") && hasPackage)
+        if (other.CompareTag("Customer") && _hasPackage)
         {
-            hasPackage = false;
+            _hasPackage = false;
+            _spriteRenderer.color = Color.white;
             Debug.Log("Package Delivered");
         }
     }
